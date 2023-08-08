@@ -37,7 +37,7 @@ jobs:
             echo "******************** RUNNING TEST FOR SHA: $SHA ********************"
 
             # sudo is just for the cluster, that complains otherwise
-            sudo docker build -f Dockerfile --build-arg COMMIT_SHA=${SHA} -t transformers-regression .
+            sudo docker build -f Dockerfile --build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g) --build-arg COMMIT_SHA=${SHA} -t transformers-regression .
 
             sudo docker run --rm -v $(pwd):/transformers-regression transformers-regression:latest
 
