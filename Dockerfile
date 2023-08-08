@@ -22,6 +22,7 @@ RUN git clone https://github.com/fxmarty/optimum-benchmark.git && \
     pip install -e .
 
 ARG COMMIT_SHA
+ENV COMMIT_SHA=${COMMIT_SHA}
 COPY transformers /transformers
 RUN cd /transformers && git checkout $COMMIT_SHA
 

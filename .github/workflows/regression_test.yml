@@ -34,12 +34,13 @@ jobs:
           cat latest_sha_reverse.txt
 
           while read SHA; do
+            echo "******************** RUNNING TEST FOR SHA: $SHA ********************"
+
             # sudo is just for the cluster, that complains otherwise
             sudo docker build -f Dockerfile --build-arg COMMIT_SHA=${SHA} -t transformers-regression .
 
             sudo docker run --rm -v $(pwd):/transformers-regression transformers-regression:latest
-            echo "******************** RUNNING TEST FOR SHA: $SHA ********************"
-            # git checkout $SHA
+
             curl -L \
             -X PATCH \
             -H "Accept: application/vnd.github+json" \
@@ -48,5 +49,3 @@ jobs:
             https://api.github.com/repos/fxmarty/transformers-regression-test/actions/variables/TRANSFORMERS_LATEST_SHA \
             -d "{\"name\": \"TRANSFORMERS_LATEST_SHA\", \"value\": \"${SHA}\"}"
           done <latest_sha_reverse.txt
-
-          # git checkout main
