@@ -9,8 +9,8 @@ defaults:
 # hydra behavior configuration
 hydra:
   run:
-    dir: runs/${now:%Y-%m-%d-%H-%M-%S}_${oc.env:COMMIT_SHA}_${experiment_name}
+    dir: runs/${oc.env:COMMIT_DATE_GMT}_${oc.env:COMMIT_SHA}/${experiment_name}
   sweep:
-    dir: sweeps/${now:%Y-%m-%d-%H-%M-%S}_${oc.env:COMMIT_SHA}_${experiment_name}
+    dir: sweeps/${oc.env:COMMIT_DATE_GMT}_${oc.env:COMMIT_SHA}/${experiment_name}
   job:
     chdir: true # to change the working directory during the run/sweep directory

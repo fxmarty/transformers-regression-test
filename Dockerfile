@@ -26,5 +26,8 @@ ENV COMMIT_SHA=${COMMIT_SHA}
 COPY transformers /transformers
 RUN cd /transformers && git checkout $COMMIT_SHA
 
+# Format commit date as e.g. "2023-07-26_14:09:17"
+RUN export COMMIT_DATE_GMT=`TZ=GMT git show -s --format=%cd --date=iso-local $COMMIT_SHA | rev | cut -c 7- | rev` && export COMMIT_DATE_GMT="${COMMIT_DATE_GMT// /_}"
+
 WORKDIR /transformers-regression
 CMD bash run_benchmark.sh
