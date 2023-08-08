@@ -39,10 +39,12 @@ jobs:
             # Format commit date as e.g. "2023-07-26_14:09:17"
             export COMMIT_DATE_GMT=`TZ=GMT git --git-dir=./transformers/.git show -s --format=%cd --date=iso-local $COMMIT_SHA | rev | cut -c 7- | rev` && export COMMIT_DATE_GMT="${COMMIT_DATE_GMT// /_}"
 
+            echo "Commit date: {$COMMIT_DATE_GMT}"
+
             # sudo is just for the cluster, that complains otherwise
             sudo docker build -f Dockerfile --build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g) --build-arg COMMIT_SHA=${SHA} --build-arg COMMIT_DATE_GMT=${COMMIT_DATE_GMT} -t transformers-regression .
 
-            sudo docker run --rm -v $(pwd):/transformers-regression transformers-regression:latest
+            sudo docker run --rm -v $(pwd):/home/user/transformers-regression transformers-regression:latest
 
             curl -L \
             -X PATCH \
