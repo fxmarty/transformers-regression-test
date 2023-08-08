@@ -20,7 +20,7 @@ jobs:
           git clone --branch main --depth 15 https://github.com/fxmarty/dummy-repo.git
           cd dummy-repo && git rev-list HEAD > latest_sha.txt
 
-          echo "env.TRANSFORMERS_LATEST_SHA = ${{ env.TRANSFORMERS_LATEST_SHA }}
+          echo "env.TRANSFORMERS_LATEST_SHA = ${{ env.TRANSFORMERS_LATEST_SHA }}"
           # ignore the SHA that have already been tested
           sed -i '/${{ env.TRANSFORMERS_LATEST_SHA }}/Q' latest_sha.txt
 
