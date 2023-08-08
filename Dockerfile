@@ -15,10 +15,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 RUN pip install torch accelerate
 
-RUN pip install optimum omegaconf==2.3.0 hydra-core==1.3.2 hydra_colorlog==1.2.0 py3nvml psutil pandas
+# We need ONNX here because the dummy input generator relies on the ONNX config in Optimum, which is unwanted and needs to be fixed.
+RUN pip install optimum omegaconf==2.3.0 hydra-core==1.3.2 hydra_colorlog==1.2.0 py3nvml psutil pandas onnx
 
-RUN git clone --depth 1 https://github.com/huggingface/optimum-benchmark.git && \
-    cd optimum-benchmark && \
+RUN git clone https://github.com/fxmarty/optimum-benchmark.git && \
+    cd optimum-benchmark && git checkout wip-ci && \
     pip install -e .
 
 COPY transformers /transformers
