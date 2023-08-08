@@ -23,16 +23,16 @@ parser.add_argument(
 
 args = parser.parse_args()
 
-available_benchmarks = glob("sweeps/*/", recursive=False)
+available_commits = glob("sweeps/*/", recursive=False)
 
-subdirectory = None
-for subdir in available_benchmarks:
+commit_subdirectory = None
+for subdir in available_commits:
     if args.commit in subdir:
-        subdirectory = Path(subdir).parts[1]
+        commit_subdirectory = Path(subdir).parts[1]
         break
 
-if subdirectory is None:
-    raise ValueError(f"Requested to save results for the SHA {args.commit}, which was not found among {available_benchmarks}.")
+if commit_subdirectory is None:
+    raise ValueError(f"Requested to save results for the SHA {args.commit}, which was not found among {available_commits}.")
 
 repo_id = "fxmarty/transformers-regressions"
 files_info = huggingface_hub.list_files_info(repo_id, repo_type="dataset")
@@ -44,12 +44,16 @@ if any(args.commit in path for path in paths):
 
 api = huggingface_hub.HfApi(token=args.token)
 
-operations = [
-    huggingface_hub.CommitOperationAdd(
-        path_in_repo=os.path.join("raw_results", subdirectory), path_or_fileobj=file_name
-    )
-    for file_name in os.listdir(os.path.join("sweeps", subdirectory))
-]
+available_benchmarks_for_commit = glob(f"sweeps/{commit_subdirectory}/*/", recursive=False)
+
+operations = []
+for benchmark_dir in available_benchmarks_for_commit:
+    operations.extend([
+        huggingface_hub.CommitOperationAdd(
+            path_in_repo=os.path.join("raw_results", commit_subdirectory, benchmark_dir, file_name), path_or_fileobj=os.path.join(benchmark_dir, file_name)
+        )
+        for file_name in os.listdir(benchmark_dir)
+    ])
 
 # TODO: add aggregation in the same commit (to later be visualized by e.g. dana),
 # it could be in a proper dataset that is updated.
