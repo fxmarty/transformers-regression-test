@@ -2,6 +2,7 @@ FROM nvidia/cuda:11.7.1-cudnn8-runtime-ubuntu22.04
 
 ARG DEBIAN_FRONTEND=noninteractive
 
+# Run this container as unprivileged to avoid later issues with permissions on host.
 ARG USER_ID
 ARG GROUP_ID
 
@@ -25,10 +26,10 @@ RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 USER user
 WORKDIR /home/user
 
-RUN pip install torch accelerate
+ENV PATH="/home/user/.local/bin:${PATH}"
 
 # We need ONNX here because the dummy input generator relies on the ONNX config in Optimum, which is unwanted and needs to be fixed.
-RUN pip install optimum omegaconf==2.3.0 hydra-core==1.3.2 hydra_colorlog==1.2.0 py3nvml psutil pandas onnx
+RUN pip install --no-cache-dir torch accelerate install optimum omegaconf==2.3.0 hydra-core==1.3.2 hydra_colorlog==1.2.0 py3nvml psutil pandas onnx
 
 RUN git clone https://github.com/fxmarty/optimum-benchmark.git && \
     cd optimum-benchmark && git checkout wip-ci && \
