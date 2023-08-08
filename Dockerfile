@@ -15,6 +15,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 RUN pip install torch accelerate
 
+RUN pip install optimum omegaconf==2.3.0 hydra-core==1.3.2 hydra_colorlog==1.2.0 py3nvml psutil pandas
+
 RUN git clone --depth 1 https://github.com/huggingface/optimum-benchmark.git && \
     cd optimum-benchmark && \
     pip install -e .
