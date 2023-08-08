@@ -36,18 +36,12 @@ RUN git clone https://github.com/fxmarty/optimum-benchmark.git && \
     pip install -e .
 
 ARG COMMIT_SHA
+ARG COMMIT_DATE_GMT
 ENV COMMIT_SHA=${COMMIT_SHA}
 COPY --chown=$USER_ID:$GROUP_ID transformers /home/user/transformers
 
 WORKDIR /home/user/transformers
 RUN git checkout $COMMIT_SHA && pip install -e .
-
-# Format commit date as e.g. "2023-07-26_14:09:17"
-RUN ls
-RUN TZ=GMT git show -s --format=%cd --date=iso-local ${COMMIT_SHA}
-RUN export COMMIT_DATE_GMT=`TZ=GMT git show -s --format=%cd --date=iso-local ${COMMIT_SHA} | rev | cut -c 7- | rev`
-RUN echo "COMMIT_DATE_GMT: $COMMIT_DATE_GMT"
-RUN export COMMIT_DATE_GMT="${COMMIT_DATE_GMT// /_}"
 
 WORKDIR /home/user/transformers-regression
 CMD bash run_benchmark.sh
