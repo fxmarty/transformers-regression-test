@@ -4,10 +4,10 @@ ARG DEBIAN_FRONTEND=noninteractive
 ARG COMMIT_SHA
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    git && \
+    git \
     python3.10 \
     python3.10-dev \
-    python3-pip \
+    python3-pip && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     update-alternatives --install /usr/bin/python python /usr/bin/python3.10 1 && \
