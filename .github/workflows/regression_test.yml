@@ -3,7 +3,7 @@ name: Transformers regression test
 on:
   workflow_dispatch:
   schedule:
-    - cron: 00 14 * * * # at 2pm every day
+    - cron: 0 */2 * * *  # every two hours
 
 jobs:
   run-regression:
@@ -49,6 +49,7 @@ jobs:
             # sudo is just for the cluster, that complains otherwise
             sudo docker build -f Dockerfile --build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g) --build-arg COMMIT_SHA=${SHA} --build-arg COMMIT_DATE_GMT=${COMMIT_DATE_GMT} -t transformers-regression .
 
+            # TODO: share HF cache to avoid redownloads
             sudo docker run --rm -v $(pwd):/home/user/transformers-regression transformers-regression:latest
 
             python aggregate_and_push.py --token ${{ secrets.HF_TOKEN }} --commit $SHA --repository fxmarty/transformers-regression
