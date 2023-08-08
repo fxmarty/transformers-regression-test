@@ -1,0 +1,15 @@
+defaults:
+  - base_config # inherits from base config
+  - _self_ # for hydra 1.1 compatibility
+
+experiment_name: pytorch_bert_inference
+
+model: hf-internal-testing/tiny-random-bert
+task: text-classification
+device: cpu
+
+hydra:
+  run:
+    dir: runs/${experiment_name} # where to save a run's output
+  sweep:
+    dir: sweeps/${now:%Y-%m-%d-%H-%M-%S}_${oc.env.COMMIT_SHA}_${experiment_name} # where to save a sweep's output
