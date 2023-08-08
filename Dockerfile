@@ -38,6 +38,7 @@ RUN git clone https://github.com/fxmarty/optimum-benchmark.git && \
 ARG COMMIT_SHA
 ARG COMMIT_DATE_GMT
 ENV COMMIT_SHA=${COMMIT_SHA}
+ENV COMMIT_DATE_GMT=${COMMIT_DATE_GMT}
 COPY --chown=$USER_ID:$GROUP_ID transformers /home/user/transformers
 
 WORKDIR /home/user/transformers
