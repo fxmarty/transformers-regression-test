@@ -1,7 +1,6 @@
 FROM nvidia/cuda:11.7.1-cudnn8-runtime-ubuntu22.04
 
 ARG DEBIAN_FRONTEND=noninteractive
-ARG COMMIT_SHA
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
@@ -22,6 +21,7 @@ RUN git clone https://github.com/fxmarty/optimum-benchmark.git && \
     cd optimum-benchmark && git checkout wip-ci && \
     pip install -e .
 
+ARG COMMIT_SHA
 COPY transformers /transformers
 RUN cd /transformers && git checkout $COMMIT_SHA
 

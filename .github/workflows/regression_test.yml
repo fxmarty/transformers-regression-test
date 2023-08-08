@@ -30,13 +30,15 @@ jobs:
           tac latest_sha.txt > ../latest_sha_reverse.txt
           cd ..
 
+          echo "Running regression tests on commits:"
+          cat latest_sha_reverse.txt
+
           while read SHA; do
             # sudo is just for the cluster, that complains otherwise
             sudo docker build -f Dockerfile --build-arg COMMIT_SHA=${SHA} -t transformers-regression .
 
             sudo docker run --rm -v $(pwd):/transformers-regression transformers-regression:latest
-
-            # echo "SHA: $SHA"
+            echo "******************** RUNNING TEST FOR SHA: $SHA ********************"
             # git checkout $SHA
             curl -L \
             -X PATCH \
