@@ -27,7 +27,6 @@ jobs:
           # Reverse the order, to iterate from oldest to newest.
           tac latest_sha.txt > latest_sha_reverse.txt
 
-          docker run
           while read SHA; do
             docker build -f Dockerfile --build-arg COMMIT_SHA=${SHA} -t transformers-regression .
 
