@@ -36,7 +36,7 @@ jobs:
           cat latest_sha_reverse.txt
 
 
-      - name: Run regression benchmarks
+      - name: Run regression benchmarks and upload to Hub
         run: |
           while read SHA; do
             echo "******************** RUNNING TEST FOR SHA: $SHA ********************"

@@ -44,6 +44,7 @@ if any(args.commit in path for path in paths):
 
 api = huggingface_hub.HfApi(token=args.token)
 
+# Here the /*/*/ stands for the benchmark name + sweep (e.g. bert_pytorch/0/)
 available_benchmarks_for_commit = glob(f"sweeps/{commit_subdirectory}/*/*/", recursive=False)
 
 operations = []
@@ -51,10 +52,11 @@ for benchmark_dir in available_benchmarks_for_commit:
     relative_dir = Path(*Path(benchmark_dir).parts[2:])  # remove sweeps/commit_dir_name
 
     for file_name in os.listdir(benchmark_dir):
-        path_in_repo = os.path.join("raw_results", commit_subdirectory, relative_dir, file_name)
-        path_or_fileobj = os.path.join(benchmark_dir, file_name)
-    
-        operations.append(huggingface_hub.CommitOperationAdd(path_in_repo=path_in_repo, path_or_fileobj=path_or_fileobj))
+        if os.path.isfile(os.path.join(benchmark_dir, file_name)):
+            path_in_repo = os.path.join("raw_results", commit_subdirectory, relative_dir, file_name)
+            path_or_fileobj = os.path.join(benchmark_dir, file_name)
+        
+            operations.append(huggingface_hub.CommitOperationAdd(path_in_repo=path_in_repo, path_or_fileobj=path_or_fileobj))
 
 # TODO: add aggregation in the same commit (to later be visualized by e.g. dana),
 # it could be in a proper dataset that is updated.
