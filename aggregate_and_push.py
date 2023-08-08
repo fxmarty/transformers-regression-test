@@ -17,7 +17,7 @@ parser.add_argument(
 )
 parser.add_argument(
     "--repository",
-    type="str",
+    type=str,
     help="Hugging Face Hub repository id to push to.",
 )
 
