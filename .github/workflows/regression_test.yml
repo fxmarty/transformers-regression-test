@@ -3,7 +3,7 @@ name: Transformers regression test
 on:
   workflow_dispatch:
   schedule:
-    - cron: 0/3 * * * *  # every two hours
+    - cron: */3 * * * *  # every two hours
 #    - cron: 0 */2 * * *  # every two hours
 
 jobs:
