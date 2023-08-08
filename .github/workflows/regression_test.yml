@@ -1,0 +1,28 @@
+name: Transformers regression test
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: 00 14 * * * # at 2pm every day
+
+jobs:
+  run-regression:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Check latest SHA
+        run: |
+          git clone --branch main --depth 15 https://github.com/fxmarty/dummy-repo.git
+          cd dummy-repo && git rev-list HEAD > latest_sha.txt
+
+          while read sha; do
+            echo "$sha"
+            git checkout $sha
+          done <latest_sha.txt
+
+          git checkout main
