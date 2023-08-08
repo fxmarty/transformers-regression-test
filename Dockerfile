@@ -38,7 +38,9 @@ RUN git clone https://github.com/fxmarty/optimum-benchmark.git && \
 ARG COMMIT_SHA
 ENV COMMIT_SHA=${COMMIT_SHA}
 COPY --chown=$USER_ID:$GROUP_ID transformers /home/user/transformers
-RUN cd /home/user/transformers && git checkout $COMMIT_SHA && pip install -e .
+
+WORKDIR /home/user/transformers
+RUN git checkout $COMMIT_SHA && pip install -e .
 
 # Format commit date as e.g. "2023-07-26_14:09:17"
 RUN export COMMIT_DATE_GMT=`TZ=GMT git show -s --format=%cd --date=iso-local $COMMIT_SHA | rev | cut -c 7- | rev` && export COMMIT_DATE_GMT="${COMMIT_DATE_GMT// /_}"
