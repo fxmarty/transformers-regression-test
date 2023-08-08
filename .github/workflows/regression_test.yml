@@ -31,9 +31,10 @@ jobs:
           cd ..
 
           while read SHA; do
-            docker build -f Dockerfile --build-arg COMMIT_SHA=${SHA} -t transformers-regression .
+            # sudo is just for the cluster, that complains otherwise
+            sudo docker build -f Dockerfile --build-arg COMMIT_SHA=${SHA} -t transformers-regression .
 
-            docker run --rm -v $(pwd):/transformers-regression transformers-regression:latest
+            sudo docker run --rm -v $(pwd):/transformers-regression transformers-regression:latest
 
             # echo "SHA: $SHA"
             # git checkout $SHA
