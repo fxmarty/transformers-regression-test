@@ -1,0 +1,27 @@
+defaults:
+  - base_config # inherits from base config
+  - _self_ # for hydra 1.1 compatibility
+
+experiment_name: llama_4gpu_inference
+
+model: togethercomputer/LLaMA-2-7B-32K
+device: cuda
+
+benchmark:
+  benchmark_duration: 20
+  new_tokens: 200
+  input_shapes:
+    sequence_length: 200
+
+backend:
+  device_map: auto
+
+hydra:
+  job:
+    env_set:
+      CUDA_VISIBLE_DEVICES: 0,1,2,3
+  sweeper:
+    params:
+      benchmark.input_shapes.batch_size: 1,2,4,16
+      backend.torch_dtype: float16,float32
+
