@@ -31,8 +31,8 @@ ENV PATH="/home/user/.local/bin:${PATH}"
 # We need ONNX here because the dummy input generator relies on the ONNX config in Optimum, which is unwanted and needs to be fixed.
 RUN pip install --no-cache-dir torch accelerate install optimum omegaconf==2.3.0 hydra-core==1.3.2 hydra_colorlog==1.2.0 py3nvml psutil pandas onnx
 
-RUN git clone https://github.com/fxmarty/optimum-benchmark.git && \
-    cd optimum-benchmark && git checkout wip-ci && \
+RUN git clone https://github.com/huggingface/optimum-benchmark.git && \
+    cd optimum-benchmark && \
     pip install -e .
 
 ARG COMMIT_SHA
