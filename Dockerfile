@@ -45,4 +45,4 @@ WORKDIR /home/user/transformers
 RUN git checkout $COMMIT_SHA && pip install -e .
 
 WORKDIR /home/user/transformers-regression
-CMD bash run_benchmark.sh
+CMD ["bash", "run_benchmark.sh"]
