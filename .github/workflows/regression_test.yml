@@ -50,10 +50,6 @@ jobs:
             # sudo is just for the cluster, that complains otherwise
             sudo docker build -f Dockerfile --build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g) --build-arg COMMIT_SHA=${SHA} --build-arg COMMIT_DATE_GMT=${COMMIT_DATE_GMT} -t transformers-regression .
 
-            ls -l
-            echo "------"
-            ls configs
-
             # TODO: share HF cache to avoid redownloads
             sudo docker run --rm -v $(pwd):/home/user/transformers-regression transformers-regression:latest
 

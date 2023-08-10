@@ -1,4 +1,3 @@
-ls configs
 cd configs && ls -1 *.yaml > ../yaml_list.txt
 cd ..
 sed -i '/base_config.yaml/d' yaml_list.txt
