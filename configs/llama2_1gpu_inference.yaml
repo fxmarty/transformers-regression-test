@@ -15,9 +15,6 @@ benchmark:
     sequence_length: 200
 
 hydra:
-  job:
-    env_set:
-      CUDA_VISIBLE_DEVICES: 0
   sweeper:
     params:
       benchmark.input_shapes.batch_size: 1,2,4,16

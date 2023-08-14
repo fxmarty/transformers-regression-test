@@ -18,9 +18,6 @@ backend:
   device_map: auto
 
 hydra:
-  job:
-    env_set:
-      CUDA_VISIBLE_DEVICES: 0,1,2,3
   sweeper:
     params:
       benchmark.input_shapes.batch_size: 1,2,4,16
