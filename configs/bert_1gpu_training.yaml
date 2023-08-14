@@ -1,0 +1,24 @@
+defaults:
+  - base_config # inherits from base config
+  - _self_ # for hydra 1.1 compatibility
+  - override benchmark: training
+
+experiment_name: bert_1gpu_training
+
+model: bert-base-uncased
+task: text-classification
+
+benchmark:
+  use_ddp: false
+  dataset_shapes:
+    dataset_size: 2000
+    sequence_length: 273
+
+hydra:
+  job:
+    env_set:
+      CUDA_VISIBLE_DEVICES: 0
+  sweeper:
+    params:
+      benchmark.training_arguments.per_device_train_batch_size: 16,32
+      backend.torch_dtype: float16,float32

@@ -4,7 +4,7 @@ defaults:
 
 experiment_name: llama_1gpu_inference
 
-model: togethercomputer/LLaMA-2-7B-32K
+model: daryl149/llama-2-7b-chat-hf
 device: cuda
 
 benchmark:

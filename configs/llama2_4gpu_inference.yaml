@@ -2,9 +2,9 @@ defaults:
   - base_config # inherits from base config
   - _self_ # for hydra 1.1 compatibility
 
-experiment_name: llama_2gpu_inference
+experiment_name: llama_4gpu_inference
 
-model: togethercomputer/LLaMA-2-7B-32K
+model: daryl149/llama-2-7b-chat-hf
 device: cuda
 
 benchmark:
@@ -19,7 +19,7 @@ backend:
 hydra:
   job:
     env_set:
-      CUDA_VISIBLE_DEVICES: 0,1
+      CUDA_VISIBLE_DEVICES: 0,1,2,3
   sweeper:
     params:
       benchmark.input_shapes.batch_size: 1,2,4,16
