@@ -13,13 +13,13 @@ nvidia-smi
 
 while read YAML_FILE_NAME; do
     echo "Running optimum-benchmark for: ${YAML_FILE_NAME}.yml"
-    if [ "cpu" == *$YAML_FILE_NAME* ]; then
+    if [[ $YAML_FILE_NAME == *"cpu"* ]]; then
         export CUDA_VISIBLE_DEVICES=""
-    elif [ "1gpu" == *$YAML_FILE_NAME* ]; then
+    elif [[ $YAML_FILE_NAME == *"1gpu"* ]]; then
         export CUDA_VISIBLE_DEVICES="0"
-    elif [ "2gpu" == *$YAML_FILE_NAME* ]; then
+    elif [[ $YAML_FILE_NAME == *"2gpu"* ]]; then
         export CUDA_VISIBLE_DEVICES="0,1"
-    elif [ "4gpu" == *$YAML_FILE_NAME* ]; then
+    elif [[ $YAML_FILE_NAME == *"4gpu"* ]]; then
         export CUDA_VISIBLE_DEVICES="0,1,2,3"
     else
         echo "ERROR: could not set CUDA_VISIBLE_DEVICES"
