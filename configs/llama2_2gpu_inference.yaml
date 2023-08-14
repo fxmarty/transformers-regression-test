@@ -8,6 +8,7 @@ model: daryl149/llama-2-7b-chat-hf
 device: cuda
 
 benchmark:
+  memory: true
   benchmark_duration: 20
   new_tokens: 200
   input_shapes:

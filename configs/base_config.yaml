@@ -8,9 +8,6 @@ defaults:
 
 device: cuda
 
-benchmark:
-  memory: true
-
 # hydra behavior configuration
 hydra:
   run:
