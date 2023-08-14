@@ -29,7 +29,7 @@ while read YAML_FILE_NAME; do
     optimum-benchmark --config-dir configs --config-name $YAML_FILE_NAME --multirun
 
     # $? is the exit status of the most recently-executed command
-    if [ $ret -ne 0 ]; then
+    if [ $? -ne 0 ]; then
         echo "Error during the execution of optimum-benchmark. Exiting with error."
         exit 1
     fi
