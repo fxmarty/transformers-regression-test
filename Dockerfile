@@ -34,8 +34,8 @@ RUN pip install --no-cache-dir torch accelerate install optimum omegaconf==2.3.0
 # TODO: remove this
 ADD "https://www.random.org/cgi-bin/randbyte?nbytes=10&format=h" skipcache
 
-RUN git clone https://github.com/huggingface/optimum-benchmark.git && \
-    cd optimum-benchmark && \
+RUN git clone https://github.com/fxmarty/optimum-benchmark.git && \
+    cd optimum-benchmark && git checkout --track origin/main-regression \
     pip install -e .
 
 ARG COMMIT_SHA
