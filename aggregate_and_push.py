@@ -34,7 +34,7 @@ for subdir in available_commits:
 if commit_subdirectory is None:
     raise ValueError(f"Requested to save results for the SHA {args.commit}, which was not found among {available_commits}.")
 
-repo_id = "fxmarty/transformers-regressions"
+repo_id = args.repository
 files_info = huggingface_hub.list_files_info(repo_id, repo_type="dataset")
 
 paths = [f.rfilename for f in files_info]
