@@ -55,7 +55,7 @@ jobs:
           cd ../../transformers-regression-test
           python dashboard/extend.py --repository ../transformers-regressions --commit $COMMIT_SHA
 
-          cd ../transformers-regression-test
+          cd ../transformers-regressions
 
           # Solve conflicts in case the regression_test workflow pushed in the meantime
           git config pull.rebase false
