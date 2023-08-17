@@ -58,6 +58,15 @@ for benchmark_dir in available_benchmarks_for_commit:
         
             operations.append(huggingface_hub.CommitOperationAdd(path_in_repo=path_in_repo, path_or_fileobj=path_or_fileobj))
 
+    hydra_path = os.path.join(benchmark_dir, ".hydra")
+    for file_name in os.listdir(hydra_path):
+        if os.path.isfile(os.path.join(hydra_path, file_name)):
+            path_in_repo = os.path.join("raw_results", commit_subdirectory, relative_dir, ".config", file_name)
+            path_or_fileobj = os.path.join(hydra_path, file_name)
+
+            operations.append(huggingface_hub.CommitOperationAdd(path_in_repo=path_in_repo, path_or_fileobj=path_or_fileobj))
+
+
 # TODO: add aggregation in the same commit (to later be visualized by e.g. dana),
 # it could be in a proper dataset that is updated.
 

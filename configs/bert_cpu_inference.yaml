@@ -7,3 +7,12 @@ experiment_name: pytorch_bert_inference
 model: hf-internal-testing/tiny-random-bert
 task: text-classification
 device: cpu
+
+benchmark:
+  memory: true
+  benchmark_duration: 15
+
+hydra:
+  sweeper:
+    params:
+      benchmark.input_shapes.batch_size: 1,4

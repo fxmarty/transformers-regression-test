@@ -9,7 +9,7 @@ device: cuda
 
 benchmark:
   memory: true
-  benchmark_duration: 20
+  benchmark_duration: 15
   new_tokens: 200
   input_shapes:
     sequence_length: 200
@@ -17,5 +17,5 @@ benchmark:
 hydra:
   sweeper:
     params:
-      benchmark.input_shapes.batch_size: 1,2,4,16
+      benchmark.input_shapes.batch_size: 1,16
       backend.torch_dtype: float16,float32
