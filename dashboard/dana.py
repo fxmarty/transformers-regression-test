@@ -2,8 +2,9 @@ from typing import Dict
 import requests
 import git
 import json
+import os
 
-TRANSFORMERS_PATH = "/home/fxmarty/hf_internship/transformers"
+TRANSFORMERS_PATH = os.environ["TRANSFORMERS_PATH"]
 API_URL = "http://localhost:7000/"
 
 def get_header():

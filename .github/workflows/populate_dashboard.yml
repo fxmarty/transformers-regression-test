@@ -31,6 +31,11 @@ jobs:
           export COMMIT_SHA=${{ github.event.inputs.commit_sha }}
           echo "COMMIT_SHA: $COMMIT_SHA"
 
+          git clone --branch main https://github.com/huggingface/transformers.git
+          cd transformers
+          export TRANSFORMERS_PATH=($pwd)
+          cd ..
+
           git clone https://fxmarty:${{ secrets.HF_TOKEN }}@huggingface.co/datasets/fxmarty/transformers-regressions
 
           git clone https://github.com/fxmarty/transformers-regression-test
