@@ -2,6 +2,10 @@ name: Populate dana dataset
 
 on:
   workflow_dispatch:
+    inputs:
+      commit_sha:
+        description: 'transformers SHA for which to add collected data to the dana dashboard'
+        required: true
 
 jobs:
   populate-dashboard:
