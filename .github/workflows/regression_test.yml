@@ -61,7 +61,7 @@ jobs:
             curl -L -X POST \
             -H "Accept: application/vnd.github+json" \
             -H "authorization: Bearer ${{ secrets.REPOSITORY_TOKEN }}" \
-            https://api.github.com/repos/fxmarty/transformers-regression-test/actions/workflows/WORKFLOW_ID_HERE/dispatches -d "{\"ref\": \"main\",\"inputs\": {\"commit_sha\": \"$SHA\"}}"
+            https://api.github.com/repos/fxmarty/transformers-regression-test/actions/workflows/66501348/dispatches -d "{\"ref\": \"main\",\"inputs\": {\"commit_sha\": \"$SHA\"}}"
 
             # Only if all the previous steps succeeded, we update the latest commit SHA whose regression is tested.
             curl -L \
