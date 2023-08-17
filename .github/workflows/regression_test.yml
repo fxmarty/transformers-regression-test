@@ -55,7 +55,7 @@ jobs:
             # nvidia-smi for it that uses host pids.
             sudo docker run --pid host --gpus all --rm -v $(pwd):/home/user/transformers-regression transformers-regression:latest
 
-            python aggregate_and_push.py --token ${{ secrets.HF_TOKEN }} --commit $SHA --repository fxmarty/transformers-regression
+            python aggregate_and_push.py --token ${{ secrets.HF_TOKEN }} --commit $SHA --repository fxmarty/transformers-regressions
 
             # Only if all the previous steps succeeded, we update the latest commit SHA whose regression is tested.
             curl -L \
