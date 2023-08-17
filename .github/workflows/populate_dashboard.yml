@@ -30,8 +30,7 @@ jobs:
 
       - name: Setup runner dependencies
         run: |
-          pip install datasets huggingface_hub
-          sudo apt update && sudo apt install -y git
+          pip install datasets huggingface_hub GitPython
 
       - name: Populate dana dashboard data
         run: |
