@@ -40,6 +40,7 @@ jobs:
           git clone --branch main https://github.com/huggingface/transformers.git
           cd transformers
           export TRANSFORMERS_PATH=($pwd)
+          echo "TRANSFORMERS_PATH: $TRANSFORMERS_PATH"
           cd ..
 
           git clone https://fxmarty:${{ secrets.HF_TOKEN }}@huggingface.co/datasets/fxmarty/transformers-regressions
@@ -51,8 +52,9 @@ jobs:
           nohup npm start &
           sleep 4
 
+          # passing the TRANSFORMERS_PATH variable like this is absurd, see if we can remove
           cd ../../transformers-regression-test
-          python dashboard/extend.py --repository ../transformers-regressions --commit $COMMIT_SHA
+          TRANSFORMERS_PATH=$TRANSFORMERS_PATH python dashboard/extend.py --repository ../transformers-regressions --commit $COMMIT_SHA
 
           cd ../transformers-regression-test
 
