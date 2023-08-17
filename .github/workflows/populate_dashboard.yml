@@ -1,0 +1,54 @@
+name: Populate dana dataset
+
+on:
+  workflow_dispatch:
+
+jobs:
+  populate-dashboard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Output Inputs
+        run: echo "${{ toJSON(github.event.inputs) }}"
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Set up node
+      - uses: actions/setup-node@v3
+        with:
+            node-version: 18
+
+      - name: Setup runner dependencies
+        run: |
+          pip install datasets huggingface_hub
+
+      - name: Populate dana dashboard data
+        run: |
+          export COMMIT_SHA=${{ github.event.inputs.commit_sha }}
+          echo "COMMIT_SHA: $COMMIT_SHA"
+
+          git clone https://fxmarty:${{ secrets.HF_TOKEN }}@huggingface.co/datasets/fxmarty/transformers-regressions
+
+          git clone https://github.com/fxmarty/transformers-regression-test
+
+          cd transformers-regressions/dana
+          npm install
+          nohup npm start &
+          sleep 4
+
+          cd ../../transformers-regression-test
+          python dashboard/extend.py --repository ../transformers-regressions --commit $COMMIT_SHA
+
+          cd ../transformers-regression-test
+
+          # Solve conflicts in case the regression_test workflow pushed in the meantime
+          git config pull.rebase false
+          git pull
+
+          git add dana
+          git commit -m "adding dana data for commit ${COMMIT_SHA}"
+          git push

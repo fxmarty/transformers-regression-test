@@ -57,6 +57,12 @@ jobs:
 
             python aggregate_and_push.py --token ${{ secrets.HF_TOKEN }} --commit $SHA --repository fxmarty/transformers-regressions
 
+            # Populate dana in an other workflow (so that we don't care if this fails)
+            curl -L -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "authorization: Bearer ${{ secrets.REPOSITORY_TOKEN }}" \
+            https://api.github.com/repos/fxmarty/transformers-regression-test/actions/workflows/WORKFLOW_ID_HERE/dispatches -d "{\"ref\": \"main\",\"inputs\": {\"commit_sha\": \"$SHA\"}}"
+
             # Only if all the previous steps succeeded, we update the latest commit SHA whose regression is tested.
             curl -L \
             -X PATCH \
