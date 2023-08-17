@@ -34,6 +34,9 @@ jobs:
 
       - name: Populate dana dashboard data
         run: |
+          git config --global user.email "felix@hf.co"
+          git config --global user.name "Felix Marty"
+
           export COMMIT_SHA=${{ github.event.inputs.commit_sha }}
           echo "COMMIT_SHA: $COMMIT_SHA"
 
