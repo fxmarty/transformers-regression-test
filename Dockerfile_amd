@@ -29,7 +29,9 @@ WORKDIR /home/user
 ENV PATH="/home/user/.local/bin:${PATH}"
 
 # We need ONNX here because the dummy input generator relies on the ONNX config in Optimum, which is unwanted and needs to be fixed.
-RUN pip install --no-cache-dir torch accelerate install optimum omegaconf==2.3.0 hydra-core==1.3.2 hydra_colorlog==1.2.0 psutil pandas onnx
+# NOTE: change once torch 2.1 is released, use RC for now
+RUN pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/test/rocm5.6/
+RUN pip install --no-cache-dir accelerate install optimum omegaconf==2.3.0 hydra-core==1.3.2 hydra_colorlog==1.2.0 psutil pandas onnx
 
 RUN git clone https://github.com/RadeonOpenCompute/pyrsmi.git && cd pyrsmi && pip install -e .
 
