@@ -10,4 +10,4 @@ device: cpu
 
 benchmark:
   memory: true
-  benchmark_duration: 5
+  duration: 5
