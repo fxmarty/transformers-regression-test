@@ -8,8 +8,8 @@ echo "COMMIT_DATE_GMT: ${COMMIT_DATE_GMT}"
 echo "All yaml to use:"
 cat yaml_list.txt
 
-echo "nvidia-smi:"
-nvidia-smi
+echo "rocm-smi:"
+rocm-smi
 
 while read YAML_FILE_NAME; do
     echo "Running optimum-benchmark for: ${YAML_FILE_NAME}.yml"
