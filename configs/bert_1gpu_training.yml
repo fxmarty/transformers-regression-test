@@ -10,10 +10,12 @@ task: text-classification
 device: cuda
 
 benchmark:
-  use_ddp: false
   dataset_shapes:
     dataset_size: 2000
     sequence_length: 273
+
+backend:
+    use_ddp: true
 
 hydra:
   sweeper:
