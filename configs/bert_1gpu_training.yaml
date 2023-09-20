@@ -15,7 +15,7 @@ benchmark:
     sequence_length: 273
 
 backend:
-    use_ddp: true
+    use_ddp: false
 
 hydra:
   sweeper:
