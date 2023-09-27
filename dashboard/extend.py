@@ -37,6 +37,10 @@ if not os.path.isdir(args.repository):
 # We assume the sweeps are constant over time for an existing serie.
 
 
+# Step 1: Separate on two projects: inference and training.
+add_project("Inference", description="Benchmarks related to inference")
+add_project("Training", description="Benchmarks related to training")
+
 # Step 1: Add commit information to all projects.
 add_build("Training", args.commit, override=True)
 add_build("Inference", args.commit, override=True)
@@ -100,6 +104,7 @@ for serie_path in relevant_series_paths:
 
 # Step 2: Add missing series, and data to the series.
 for serie_name, serie_data in tqdm(unique_series.items(), desc="Adding series and data"):
+    print("serie_name", serie_name)
     analyse = {
         "benchmark": {
             "range": "10%",
