@@ -20,6 +20,6 @@ backend:
 hydra:
   sweeper:
     params:
-      benchmark.input_shapes.batch_size: 1,2,4,16
+      benchmark.input_shapes.batch_size: 1,16
       backend.torch_dtype: float16,float32
 
