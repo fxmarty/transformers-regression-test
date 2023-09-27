@@ -7,6 +7,10 @@ experiment_name: llama_1gpu_inference
 model: meta-llama/Llama-2-7b-chat-hf
 device: cuda
 
+backend:
+  initial_isolation_check: false
+  continous_isolation_check: false
+
 benchmark:
   memory: false
   duration: 15
