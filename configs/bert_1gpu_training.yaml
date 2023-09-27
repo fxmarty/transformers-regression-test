@@ -11,7 +11,7 @@ device: cuda
 
 benchmark:
   dataset_shapes:
-    dataset_size: 1800
+    dataset_size: 1500
     sequence_length: 256
 
 backend:

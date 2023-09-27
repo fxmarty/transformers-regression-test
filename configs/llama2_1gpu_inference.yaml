@@ -4,12 +4,12 @@ defaults:
 
 experiment_name: llama_1gpu_inference
 
-model: meta-llama/Llama-2-7b-chat-hf
+model: fxmarty/tiny-llama-fast-tokenizer
 device: cuda
 
 benchmark:
   memory: false
-  duration: 15
+  duration: 10
   new_tokens: 200
   input_shapes:
     sequence_length: 200
