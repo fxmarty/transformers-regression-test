@@ -11,8 +11,8 @@ device: cuda
 
 benchmark:
   dataset_shapes:
-    dataset_size: 2000
-    sequence_length: 273
+    dataset_size: 1800
+    sequence_length: 256
 
 backend:
     use_ddp: false
@@ -20,5 +20,5 @@ backend:
 hydra:
   sweeper:
     params:
-      +benchmark.training_arguments.per_device_train_batch_size: 16,32
+      +benchmark.training_arguments.per_device_train_batch_size: 32
       backend.torch_dtype: float16,float32
