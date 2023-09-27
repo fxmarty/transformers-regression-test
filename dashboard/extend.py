@@ -1,4 +1,4 @@
-from dana import add_project, add_build, add_series, add_sample, get_build_id
+from dana import add_project, add_build, add_series, add_sample, get_build_id, get_description
 import argparse
 import os
 from glob import glob
@@ -50,6 +50,7 @@ for serie_path in available_series:
         relevant_series_paths.append(serie_path)
 
 unique_series = {}
+# serie_path is a multirun directory.
 for serie_path in relevant_series_paths:
     raw_serie_name = split_path(serie_path)[-1]
 
@@ -88,13 +89,14 @@ for serie_path in relevant_series_paths:
 
 
         for metric_name, metric_data in metrics_data.items():
-            full_serie_name = serie_name + f"_{i}_{metric_name}"
-            full_serie_name = full_serie_name.replace("(", "_")
-            full_serie_name = full_serie_name.replace(")", "_")
-            full_serie_name = full_serie_name.replace("/", "_")
-            full_serie_name = full_serie_name.replace(".", "_")
+            if metric_name not in ["warmup.runtime(s)", "warmup.throughput(samples/s)", "overall_training.runtime(s)", "overall_training.throughput(samples/s)"]:
+                full_serie_name = serie_name + f"_{i}_{metric_name}"
+                full_serie_name = full_serie_name.replace("(", "_")
+                full_serie_name = full_serie_name.replace(")", "_")
+                full_serie_name = full_serie_name.replace("/", "_")
+                full_serie_name = full_serie_name.replace(".", "_")
 
-            unique_series[full_serie_name] = {"project_id": project_id, "result_name": result_name, "metric_data": metric_data, "serie_path": os.path.join(serie_path, str(i))}
+                unique_series[full_serie_name] = {"project_id": project_id, "result_name": result_name, "metric_data": metric_data, "serie_path": os.path.join(serie_path, str(i)), "multirun_dir": serie_path}
 
 # Step 2: Add missing series, and data to the series.
 for serie_name, serie_data in tqdm(unique_series.items(), desc="Adding series and data"):
@@ -106,7 +108,8 @@ for serie_name, serie_data in tqdm(unique_series.items(), desc="Adding series an
         }
     }
 
-    result = add_series(project_id=serie_data["project_id"], serie_id=serie_name, description="", analyse=analyse, strict=False)
+    description = get_description(multirun_dir=serie_data["multirun_dir"], sweep_dir=serie_data["serie_path"])
+    result = add_series(project_id=serie_data["project_id"], serie_id=serie_name, description=description, analyse=analyse, strict=False)
 
     if "serieId already exist" in result.text:
         print(f"INFO: the series {serie_name} already exists. Simply adding data.")

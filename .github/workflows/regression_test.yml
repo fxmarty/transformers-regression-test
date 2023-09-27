@@ -47,12 +47,12 @@ jobs:
             echo "Commit date: ${COMMIT_DATE_GMT}"
 
             # NOTE: sudo is needed for the science cluster
-            docker build -f Dockerfile_amd --build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g) --build-arg COMMIT_SHA=${SHA} --build-arg COMMIT_DATE_GMT=${COMMIT_DATE_GMT} -t transformers-regression .
+            docker build -f Dockerfile_amd --build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g) --build-arg COMMIT_SHA=${SHA} --build-arg COMMIT_DATE_GMT=${COMMIT_DATE_GMT} --build-arg HF_TOKEN=${{ secrets.HF_TOKEN }} -t transformers-regression .
 
             # TODO: share HF cache to avoid redownloads
             # We need to use the host pid namespace for the isolation checks, as we rely on
             # nvidia-smi for it that uses host pids.
-            docker run --pid host --device /dev/kfd --device /dev/dri --rm -v $(pwd):/home/user/transformers-regression transformers-regression:latest
+            docker run --pid host --device /dev/kfd --device /dev/dri --rm --shm-size=64G -v /home/felix/.cache/huggingface/:/home/user/.cache/huggingface -v $(pwd):/home/user/transformers-regression transformers-regression:latest
 
             python aggregate_and_push.py --token ${{ secrets.HF_TOKEN }} --commit $SHA --repository fxmarty/transformers-regressions
 

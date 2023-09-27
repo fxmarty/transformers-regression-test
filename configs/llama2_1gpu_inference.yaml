@@ -4,7 +4,7 @@ defaults:
 
 experiment_name: llama_1gpu_inference
 
-model: fxmarty/tiny-llama-fast-tokenizer
+model: meta-llama/Llama-2-7b-chat-hf
 device: cuda
 
 benchmark:

@@ -5,7 +5,7 @@ from glob import glob
 import csv
 from tqdm import tqdm
 
-from dana import add_project, add_build, add_series, add_sample, get_build_id
+from dana import add_project, add_build, add_series, add_sample, get_build_id, get_description
 
 def split_path(path):
     return os.path.normpath(path).split(os.path.sep)
@@ -88,13 +88,14 @@ for serie_path in available_series:
 
     for i in range(n_sweeps):
         for metric_name in metrics_list:
-            full_serie_name = serie_name + f"_{i}_{metric_name}"
-            full_serie_name = full_serie_name.replace("(", "_")
-            full_serie_name = full_serie_name.replace(")", "_")
-            full_serie_name = full_serie_name.replace("/", "_")
-            full_serie_name = full_serie_name.replace(".", "_")
+            if metric_name not in ["warmup.runtime(s)", "warmup.throughput(samples/s)", "overall_training.runtime(s)", "overall_training.throughput(samples/s)"]:
+                full_serie_name = serie_name + f"_{i}_{metric_name}"
+                full_serie_name = full_serie_name.replace("(", "_")
+                full_serie_name = full_serie_name.replace(")", "_")
+                full_serie_name = full_serie_name.replace("/", "_")
+                full_serie_name = full_serie_name.replace(".", "_")
 
-            unique_series[full_serie_name] = {"project_id": project_id, "result_name": result_name, "metric_name": metric_name, "serie_subpath": os.path.join(raw_serie_name, str(i))}
+                unique_series[full_serie_name] = {"project_id": project_id, "result_name": result_name, "metric_name": metric_name, "serie_subpath": os.path.join(raw_serie_name, str(i)), "multirun_dir": serie_path}
 
 for serie_name, serie_data in tqdm(unique_series.items(), desc="Adding series"):
     analyse = {
@@ -107,7 +108,8 @@ for serie_name, serie_data in tqdm(unique_series.items(), desc="Adding series"):
 
     print("project_id", serie_data["project_id"])
     print("serie_id", serie_name)
-    add_series(project_id=serie_data["project_id"], serie_id=serie_name, description="", analyse=analyse)
+    description = get_description(multirun_dir=serie_data["multirun_dir"], sweep_dir=serie_data["serie_subpath"])
+    add_series(project_id=serie_data["project_id"], serie_id=serie_name, description=description, analyse=analyse)
 
 # Step 4: Add data for all series.
 for commit_data_path in tqdm(commits_data_paths, desc="Adding samples for each commit"):

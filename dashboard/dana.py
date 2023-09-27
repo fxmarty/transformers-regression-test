@@ -3,6 +3,8 @@ import requests
 import git
 import json
 import os
+import yaml
+from functools import reduce
 
 TRANSFORMERS_PATH = os.environ["TRANSFORMERS_PATH"]
 API_URL = "http://localhost:7000/"
@@ -18,6 +20,36 @@ def get_build_id(commit_sha: str):
     commit = repository.commit(commit_sha)
     build_id = commit.count()
     return build_id
+
+
+def deep_get(dictionary, keys, default=None):
+    return reduce(lambda d, key: d.get(key, default) if isinstance(d, dict) else default, keys.split("."), dictionary)
+
+def get_description(multirun_dir, sweep_dir):
+    with open(os.path.join(multirun_dir, "multirun.yaml"), 'r') as file:
+        data = yaml.safe_load(file)
+    
+    sweep_keys = list(data["hydra"]["sweeper"]["params"].keys())
+    
+    with open(os.path.join(sweep_dir, 'hydra_config.yaml'), 'r') as file:
+        data = yaml.safe_load(file)
+    
+    description = ""
+    
+    for key in sweep_keys:
+        print("key", key)
+        value = deep_get(data, key)
+        description += f"\n{key}: {value}"
+    
+    other_configs = ["benchmark.input_shapes.sequence_length", "benchmark.new_tokens", "benchmark.dataset_shapes.sequence_length"]
+    
+    for other_config in other_configs:
+        if other_config not in sweep_keys:
+            value = deep_get(data, other_config)
+            if value is not None:
+                description += f"\n{other_config}: {value}"
+    
+    return description
 
 def add_project(project_id: str, description: str):
     session = requests.Session()
