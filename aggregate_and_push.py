@@ -72,7 +72,11 @@ for file_path in top_yaml_files_per_bench:
     relative_file_path = Path(*Path(benchmark_dir).parts[2:])  # remove sweeps/commit_dir_name
     path_in_repo = os.path.join("raw_results", commit_subdirectory, relative_file_path)
 
+    print("path_in_repo", path_in_repo)
+    print("file_path", file_path)
     operations.append(huggingface_hub.CommitOperationAdd(path_in_repo=path_in_repo, path_or_fileobj=file_path))
+
+print("operations", operations)
 
 # TODO: add aggregation in the same commit (to later be visualized by e.g. dana),
 # it could be in a proper dataset that is updated.
