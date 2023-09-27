@@ -66,10 +66,15 @@ for benchmark_dir in available_benchmarks_for_commit:
 
             operations.append(huggingface_hub.CommitOperationAdd(path_in_repo=path_in_repo, path_or_fileobj=path_or_fileobj))
 
+top_yaml_files_per_bench = glob(f"sweeps/{commit_subdirectory}/*/*.yaml", recursive=False)
+for file_path in top_yaml_files_per_bench:
+    relative_file_path = Path(*Path(benchmark_dir).parts[2:])  # remove sweeps/commit_dir_name
+    path_in_repo = os.path.join("raw_results", commit_subdirectory, relative_file_path)
+
+    operations.append(huggingface_hub.CommitOperationAdd(path_in_repo=path_in_repo, path_or_fileobj=file_path))
 
 # TODO: add aggregation in the same commit (to later be visualized by e.g. dana),
 # it could be in a proper dataset that is updated.
-
 new_pr = api.create_commit(
     repo_id=repo_id,
     repo_type="dataset",
